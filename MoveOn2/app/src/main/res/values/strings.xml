@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">MoveOn</string>
+    <string name="landing_activity_message">Service for your best Health &amp; Cross Fit</string>
+
+    <string name="button_text_guide_next">다음</string>
+    <string name="button_text_guide_finish">완전히 이해했어요!</string>
+
+    // used in LoginActivity
+    <string name="login_title">로그인</string>
+    <string name="login_phone_number_text">휴대폰 번호</string>
+    <string name="login_email_id_text">이메일 / 아이디</string>
+    <string name="login_hint_email">이메일</string>
+    <string name="login_hint_password">비밀번호</string>
+    <string name="login_find_password_message">비밀번호를 잃어버리셨나요?</string>
+    <string name="login_sign_up_text">회원가입</string>
 </resources>
