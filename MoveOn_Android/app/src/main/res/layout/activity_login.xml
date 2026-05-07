@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="32dp"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="104dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/login_title"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:baselineAligned="false"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/phone_number_ll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="@string/login_phone_number_text"/>
+
+            <View
+                android:id="@+id/phone_number_underline"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/login_type_selected"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/email_id_ll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="@string/login_email_id_text"/>
+
+            <View
+                android:id="@+id/email_id_underline"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/login_type_not_selected"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/background_login_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="12dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/email_id_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:background="@null"
+            android:autofillHints="@null"
+            android:textColorHint="@color/hint_color"
+            android:hint="@string/login_hint_email"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/background_login_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/password_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:autofillHints="@null"
+            android:background="@null"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColorHint="@color/hint_color"
+            android:hint="@string/login_hint_password"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/find_password_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:text="@string/login_find_password_message"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/login_button"
+        style="@style/LoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/login_title"/>
+
+</LinearLayout>
