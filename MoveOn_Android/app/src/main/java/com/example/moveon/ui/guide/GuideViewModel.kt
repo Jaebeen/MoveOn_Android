@@ -11,52 +11,18 @@ class GuideViewModel : ViewModel() {
     private val _isLastPage = MutableLiveData(false)
     val isLastPage: LiveData<Boolean> = _isLastPage
 
-    private val _event = MutableLiveData<GuideEvent?>()
-    val event: LiveData<GuideEvent?> = _event
-
     fun setCurrentPage(position: Int) {
         val page = position.coerceIn(0, LAST_PAGE_INDEX)
         _currentPage.value = page
         _isLastPage.value = page == LAST_PAGE_INDEX
     }
 
-    fun onPageSelected(position: Int, hasRequiredPermissions: Boolean) {
-        if (position == LAST_PAGE_INDEX && !hasRequiredPermissions) {
-            _event.value = GuideEvent.RequestPermission(forceRequest = false)
-            return
+    fun nextPage(currentPage: Int): Int? {
+        return if (currentPage >= LAST_PAGE_INDEX) {
+            null
+        } else {
+            currentPage + 1
         }
-
-        setCurrentPage(position)
-
-        if (position == PERMISSION_PAGE_INDEX && !hasRequiredPermissions) {
-            _event.value = GuideEvent.RequestPermission(forceRequest = false)
-        }
-    }
-
-    fun onNextClicked(currentPage: Int, hasRequiredPermissions: Boolean) {
-        when {
-            currentPage >= LAST_PAGE_INDEX -> {
-                _event.value = GuideEvent.FinishGuide
-            }
-
-            currentPage == PERMISSION_PAGE_INDEX && !hasRequiredPermissions -> {
-                _event.value = GuideEvent.RequestPermission(forceRequest = true)
-            }
-
-            else -> {
-                _event.value = GuideEvent.MoveToPage(currentPage + 1, smoothScroll = true)
-            }
-        }
-    }
-
-    fun onPermissionResult(hasRequiredPermissions: Boolean) {
-        if (hasRequiredPermissions) {
-            _event.value = GuideEvent.MoveToPage(LAST_PAGE_INDEX, smoothScroll = true)
-        }
-    }
-
-    fun clearEvent() {
-        _event.value = null
     }
 
     companion object {
@@ -64,17 +30,4 @@ class GuideViewModel : ViewModel() {
         const val PERMISSION_PAGE_INDEX = 2
         const val LAST_PAGE_INDEX = PAGE_COUNT - 1
     }
-}
-
-sealed class GuideEvent {
-    data class MoveToPage(
-        val position: Int,
-        val smoothScroll: Boolean
-    ) : GuideEvent()
-
-    data class RequestPermission(
-        val forceRequest: Boolean
-    ) : GuideEvent()
-
-    data object FinishGuide : GuideEvent()
 }

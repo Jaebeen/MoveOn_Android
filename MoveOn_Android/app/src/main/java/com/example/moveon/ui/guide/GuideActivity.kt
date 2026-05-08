@@ -16,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.moveon.R
 import com.example.moveon.data.local.OnboardingPreference
 import com.example.moveon.databinding.ActivityGuideBinding
+import com.example.moveon.ui.guide.adapter.GuidePagerAdapter
 import com.example.moveon.ui.login.LoginActivity
 
 class GuideActivity : AppCompatActivity() {
@@ -27,7 +28,10 @@ class GuideActivity : AppCompatActivity() {
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
         isPermissionRequestInProgress = false
-        viewModel.onPermissionResult(hasRequiredPermissions())
+
+        if (hasRequiredPermissions()) {
+            moveToPage(GuideViewModel.LAST_PAGE_INDEX)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,16 +45,32 @@ class GuideActivity : AppCompatActivity() {
         binding.guideViewPager.registerOnPageChangeCallback(
             object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
-                    viewModel.onPageSelected(position, hasRequiredPermissions())
+                    if (position == GuideViewModel.LAST_PAGE_INDEX && !hasRequiredPermissions()) {
+                        moveToPage(GuideViewModel.PERMISSION_PAGE_INDEX, smoothScroll = false)
+                        requestRequiredPermissions(forceRequest = false)
+                        return
+                    }
+
+                    viewModel.setCurrentPage(position)
+
+                    if (position == GuideViewModel.PERMISSION_PAGE_INDEX && !hasRequiredPermissions()) {
+                        requestRequiredPermissions(forceRequest = false)
+                    }
                 }
             }
         )
 
         binding.nextButton.setOnClickListener {
-            viewModel.onNextClicked(
-                currentPage = binding.guideViewPager.currentItem,
-                hasRequiredPermissions = hasRequiredPermissions()
-            )
+            val currentPage = binding.guideViewPager.currentItem
+            val nextPage = viewModel.nextPage(currentPage)
+
+            when {
+                nextPage == null -> finishGuide()
+                currentPage == GuideViewModel.PERMISSION_PAGE_INDEX && !hasRequiredPermissions() -> {
+                    requestRequiredPermissions(forceRequest = true)
+                }
+                else -> moveToPage(nextPage)
+            }
         }
 
         viewModel.isLastPage.observe(this) { isLastPage ->
@@ -60,19 +80,6 @@ class GuideActivity : AppCompatActivity() {
                 R.string.button_text_guide_next
             }
             binding.nextButton.setText(textResId)
-        }
-
-        viewModel.event.observe(this) { event ->
-            when (event) {
-                GuideEvent.FinishGuide -> finishGuide()
-                is GuideEvent.MoveToPage -> moveToPage(event.position, event.smoothScroll)
-                is GuideEvent.RequestPermission -> requestRequiredPermissions(event.forceRequest)
-                null -> Unit
-            }
-
-            if (event != null) {
-                viewModel.clearEvent()
-            }
         }
     }
 
@@ -94,7 +101,7 @@ class GuideActivity : AppCompatActivity() {
         val deniedPermissions = deniedRequiredPermissions()
 
         if (deniedPermissions.isEmpty()) {
-            viewModel.onPermissionResult(hasRequiredPermissions())
+            moveToPage(GuideViewModel.LAST_PAGE_INDEX)
         } else if (forceRequest && hasPermanentlyDeniedPermission(deniedPermissions)) {
             showPermissionSettingsDialog()
         } else if (forceRequest || !isPermissionRequestInProgress) {

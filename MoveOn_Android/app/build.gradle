@@ -16,6 +16,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "BASE_URL", "\"http://172.16.50.84:5000/api/\""
     }
 
     buildTypes {
@@ -39,6 +40,7 @@ android {
     }
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -47,6 +49,11 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
     implementation libs.material
+
+    // network
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 
     // firebase
     implementation platform('com.google.firebase:firebase-bom:34.11.0')

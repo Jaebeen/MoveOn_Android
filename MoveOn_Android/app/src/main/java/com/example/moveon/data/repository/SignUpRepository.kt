@@ -2,19 +2,19 @@ package com.example.moveon.data.repository
 
 import com.example.moveon.data.remote.dto.AuthResponse
 import com.example.moveon.data.remote.dto.ErrorResponse
-import com.example.moveon.data.remote.dto.LoginRequest
+import com.example.moveon.data.remote.dto.RegisterRequest
 import com.example.moveon.data.remote.network.RetrofitClient
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AuthRepository {
-    fun login(
-        request: LoginRequest,
+class SignUpRepository {
+    fun register(
+        request: RegisterRequest,
         callback: (Result<AuthResponse>) -> Unit
     ) {
-        RetrofitClient.apiService.login(request)
+        RetrofitClient.apiService.register(request)
             .enqueue(object : Callback<AuthResponse> {
                 override fun onResponse(
                     call: Call<AuthResponse>,
